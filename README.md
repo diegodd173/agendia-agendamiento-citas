@@ -30,8 +30,7 @@ Microservicio NestJS para gestionar un sistema de agendamiento de citas para bar
 
 #### 1. Clonar el repositorio
 \`\`\`bash
-git clone <tu-repo>
-cd barbershop-scheduling-microservice
+git clone https://github.com/diegodd173/agendia-agendamiento-citas.git
 \`\`\`
 
 #### 2. Instalar dependencias
@@ -45,7 +44,6 @@ Crea un archivo `.env` en la raíz del proyecto:
 \`\`\`env
 # Base de datos
 MONGODB_URI=mongodb://localhost:27017/barbershop
-MONGODB_DB=barbershop
 
 # Puerto
 PORT=3000
