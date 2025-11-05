@@ -186,10 +186,10 @@ POST /users
 Content-Type: application/json
 
 {
-  "name": "Juan Pérez",
-  "email": "juan@example.com",
-  "phone": "+34 123 456 789",
-  "address": "Calle Principal 123"
+  "nombre": "María García",
+  "email": "maria@example.com",
+  "telefono": "+34 555 123 456",
+  "rol": "cliente"
 }
 \`\`\`
 
@@ -197,10 +197,10 @@ Content-Type: application/json
 \`\`\`json
 {
   "_id": "507f1f77bcf86cd799439011",
-  "name": "Juan Pérez",
+  "nombre": "Juan Pérez",
   "email": "juan@example.com",
-  "phone": "+34 123 456 789",
-  "address": "Calle Principal 123",
+  "telefono": "+34 123 456 789",
+  "rol": "Cliente",
   "createdAt": "2024-01-15T10:30:00Z"
 }
 \`\`\`
@@ -219,8 +219,8 @@ GET /users
     "_id": "507f1f77bcf86cd799439011",
     "name": "Juan Pérez",
     "email": "juan@example.com",
-    "phone": "+34 123 456 789",
-    "address": "Calle Principal 123",
+    "telefono": "+34 123 456 789",
+    "rol": "Cliente",
     "createdAt": "2024-01-15T10:30:00Z"
   }
 ]
@@ -268,10 +268,10 @@ POST /services
 Content-Type: application/json
 
 {
-  "name": "Corte Clásico",
-  "description": "Corte tradicional con máquina y tijeras",
-  "duration": 30,
-  "price": 15.50
+  "nombre": "Corte Clásico",
+  "descripcion": "Corte tradicional con máquina y tijeras",
+  "duracion_minutos": 30,
+  "precio": 15.50
 }
 \`\`\`
 
@@ -279,10 +279,10 @@ Content-Type: application/json
 \`\`\`json
 {
   "_id": "507f1f77bcf86cd799439012",
-  "name": "Corte Clásico",
-  "description": "Corte tradicional con máquina y tijeras",
-  "duration": 30,
-  "price": 15.50,
+  "nombre": "Corte Clásico",
+  "descripcion": "Corte tradicional con máquina y tijeras",
+  "duracion_minutos": 30,
+  "precio": 15.50,
   "createdAt": "2024-01-15T10:30:00Z"
 }
 \`\`\`
@@ -331,11 +331,10 @@ POST /time-slots
 Content-Type: application/json
 
 {
-  "barberName": "Carlos López",
-  "date": "2024-01-20",
-  "startTime": "09:00",
-  "endTime": "10:00",
-  "isBooked": false
+  "barbero_id": "690ac64cb677b58c5d2d1bd1",
+  "fecha": "2024-01-20",
+  "hora_inicio": "09:00",
+  "hora_fin": "10:00"
 }
 \`\`\`
 
@@ -343,10 +342,10 @@ Content-Type: application/json
 \`\`\`json
 {
   "_id": "507f1f77bcf86cd799439013",
-  "barberName": "Carlos López",
-  "date": "2024-01-20",
-  "startTime": "09:00",
-  "endTime": "10:00",
+  "barbero_id": "690ac64cb677b58c5d2d1bd1",
+  "fecha": "2024-01-20",
+  "hora_inicio": "09:00",
+  "hora_fin": "10:00",
   "isBooked": false,
   "createdAt": "2024-01-15T10:30:00Z"
 }
@@ -354,9 +353,9 @@ Content-Type: application/json
 
 ---
 
-##### Obtener Franjas Disponibles por Barbero y Fecha
+##### Obtener Franjas Disponibles por Barbero
 \`\`\`
-GET /time-slots/available?barberName=Carlos López&date=2024-01-20
+GET /time-slots/:id
 \`\`\`
 
 ---
@@ -374,7 +373,10 @@ PATCH /time-slots/:id
 Content-Type: application/json
 
 {
-  "isBooked": true
+  "barbero_id": "690ac64cb677b58c5d2d1bd1",
+  "fecha": "2024-01-20",
+  "hora_inicio": "09:00",
+  "hora_fin": "20:00"
 }
 \`\`\`
 
@@ -395,32 +397,35 @@ POST /bookings
 Content-Type: application/json
 
 {
-  "userId": "507f1f77bcf86cd799439011",
-  "serviceId": "507f1f77bcf86cd799439012",
-  "timeSlotId": "507f1f77bcf86cd799439013",
-  "barberName": "Carlos López",
-  "specialRequests": "Quiero un corte más corto en los lados"
+  "cliente_id": "690ab838d128f500f6a3656f",
+  "barbero_id": "690ac64cb677b58c5d2d1bd1",
+  "servicio_id": "690ac119b677b58c5d2d1bca",
+  "time_slot_id": "690ac783d8d2a49ba9f113d8",
+  "fecha": "2025-01-20",
+  "hora_inicio": "08:00",
+  "hora_fin": "10:00",
+  "observaciones": "Quiero un corte más corto en los lados"
 }
 \`\`\`
 
 **Respuesta exitosa (201):**
 \`\`\`json
 {
-  "_id": "507f1f77bcf86cd799439014",
-  "userId": "507f1f77bcf86cd799439011",
-  "serviceId": "507f1f77bcf86cd799439012",
-  "timeSlotId": "507f1f77bcf86cd799439013",
-  "barberName": "Carlos López",
-  "specialRequests": "Quiero un corte más corto en los lados",
-  "status": "confirmed",
-  "bookingDate": "2024-01-15T10:30:00Z",
-  "appointmentDate": "2024-01-20T09:00:00Z"
+  "cliente_id": "690ab838d128f500f6a3656f",
+  "barbero_id": "690ac64cb677b58c5d2d1bd1",
+  "servicio_id": "690ac119b677b58c5d2d1bca",
+  "fecha": "2025-01-20",
+  "hora_inicio": "08:00",
+  "hora_fin": "10:00",
+  "estado": "confirmada",
+  "observaciones": "Quiero un corte más corto en los lados",
+  "time_slot_id": "690ac783d8d2a49ba9f113d8",
+  "_id": "690acef98e52125eb639e721",
+  "createdAt": "2025-11-05T04:13:45.476Z",
+  "updatedAt": "2025-11-05T04:13:45.476Z",
+  "__v": 0
 }
 \`\`\`
-
-**⚠️ Automáticamente:**
-- Se marca la franja horaria como reservada (`isBooked: true`)
-- Se genera un ID de confirmación
 
 ---
 
@@ -438,17 +443,6 @@ GET /bookings/:id
 
 ---
 
-##### Obtener Reservas de un Usuario
-\`\`\`
-GET /bookings/user/:userId
-\`\`\`
-
-Ejemplo:
-\`\`\`
-GET /bookings/user/507f1f77bcf86cd799439011
-\`\`\`
-
----
 
 ##### Obtener Reservas de un Barbero
 \`\`\`
@@ -481,10 +475,6 @@ Content-Type: application/json
 DELETE /bookings/:id
 \`\`\`
 
-**⚠️ Automáticamente:**
-- Se marca la franja horaria como disponible (`isBooked: false`)
-- Se elimina la reserva
-
 ---
 
 ## Flujo Completo de Ejemplo
@@ -493,10 +483,10 @@ DELETE /bookings/:id
 \`\`\`
 POST http://localhost:3000/users
 {
-  "name": "María García",
+  "nombre": "María García",
   "email": "maria@example.com",
-  "phone": "+34 555 123 456",
-  "address": "Av. Independencia 45"
+  "telefono": "+34 555 123 456",
+  "rol": "cliente"
 }
 \`\`\`
 
@@ -506,10 +496,10 @@ Copiar el `_id` de la respuesta: `USER_ID`
 \`\`\`
 POST http://localhost:3000/services
 {
-  "name": "Corte y Barba",
-  "description": "Corte completo + arreglo de barba",
-  "duration": 45,
-  "price": 25.00
+  "nombre": "Corte y Barba",
+  "descripcion": "Corte completo + arreglo de barba",
+  "duracion_minutos": 45,
+  "precio": 25.00
 }
 \`\`\`
 
@@ -633,13 +623,3 @@ PORT=3001
 - No se pueden crear dos reservas en la misma franja horaria
 
 ---
-
-## Autor
-
-Barbershop Scheduling Microservice v1.0.0
-
----
-
-## Licencia
-
-MIT
