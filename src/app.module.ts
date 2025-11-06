@@ -6,14 +6,28 @@ import { ServicesModule } from './services/services.module';
 import { TimeSlotsModule } from './time-slots/time-slots.module';
 import { BookingsModule } from './bookings/bookings.module';
 
+/**
+ * Módulo raíz de la aplicación.
+ * Configura la conexión con MongoDB, carga las variables de entorno y
+ * agrupa los módulos principales del microservicio de agendamiento.
+ */
 @Module({
   imports: [
+    /**
+     * Carga las variables de entorno desde el archivo `.env`
+     * y las hace accesibles globalmente en toda la aplicación.
+     */
     ConfigModule.forRoot({
       isGlobal: true,
     }),
 
+    /**
+     * Configura la conexión a MongoDB de forma asíncrona,
+     * usando las variables de entorno administradas por ConfigService.
+     */
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
+
       useFactory: (configService: ConfigService) => {
         const uri = configService.get<string>('MONGODB_URI');
         if (!uri) {
@@ -23,15 +37,19 @@ import { BookingsModule } from './bookings/bookings.module';
         }
 
         return {
-          uri: uri,
-          // Opciones de conexión adicionales si las necesitas:
-          // useNewUrlParser: true,
-          // useUnifiedTopology: true,
+          uri,
         };
       },
       inject: [ConfigService],
     }),
 
+    /**
+     * Módulos funcionales que encapsulan las distintas áreas del microservicio:
+     * - UsersModule: gestión de usuarios
+     * - ServicesModule: definición de servicios ofrecidos
+     * - TimeSlotsModule: manejo de horarios disponibles
+     * - BookingsModule: administración de reservas
+     */
     UsersModule,
     ServicesModule,
     TimeSlotsModule,
